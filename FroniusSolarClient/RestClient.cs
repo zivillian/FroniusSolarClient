@@ -3,6 +3,8 @@ using FroniusSolarClient.Helpers;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace FroniusSolarClient
 {
@@ -39,24 +41,23 @@ namespace FroniusSolarClient
             return requestMessage;
         }
 
-        public HttpResponseMessage ExecuteRequest(HttpRequestMessage requestMessage)
+        public Task<HttpResponseMessage> ExecuteRequestAsync(HttpRequestMessage requestMessage, CancellationToken cancellationToken)
         {
-            return _httpClient.SendAsync(requestMessage).Result;
+            return _httpClient.SendAsync(requestMessage, cancellationToken);
         }
 
- 
-        public  Response<T> GetResponse<T>(string endpoint)
+        public async Task<Response<T>> GetResponseAsync<T>(string endpoint, CancellationToken cancellationToken)
         {
             try
             {
 
                 var httpRequest = PrepareHTTPMessage(endpoint);
 
-                var httpResponse = ExecuteRequest(httpRequest);
+                var httpResponse = await ExecuteRequestAsync(httpRequest, cancellationToken).ConfigureAwait(false);
 
                 httpResponse.EnsureSuccessStatusCode();
 
-                var content = httpResponse.Content.ReadAsStringAsync().Result;
+                var content = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
                 _logger.LogInformation($"Response Code: {httpResponse.StatusCode.ToString()}");
                 _logger.LogDebug($"Content: {content}");
 
@@ -64,13 +65,11 @@ namespace FroniusSolarClient
 
                 return response;
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 _logger.LogError($"An error occured: {ex.Message}");
                 return null;
             }
         }
-     
-
     }
 }

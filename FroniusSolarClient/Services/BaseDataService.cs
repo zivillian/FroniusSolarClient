@@ -1,4 +1,6 @@
-﻿using FroniusSolarClient.Entities.SolarAPI.V1;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using FroniusSolarClient.Entities.SolarAPI.V1;
 
 namespace FroniusSolarClient.Services
 {
@@ -11,9 +13,9 @@ namespace FroniusSolarClient.Services
             _restClient = restClient;
         }
 
-        protected Response<T> GetDataServiceResponse<T>(string endpointURL)
+        protected Task<Response<T>> GetDataServiceResponseAsync<T>(string endpointURL, CancellationToken cancellationToken)
         {
-            return _restClient.GetResponse<T>(endpointURL);
+            return _restClient.GetResponseAsync<T>(endpointURL, cancellationToken);
         }
     }
 }

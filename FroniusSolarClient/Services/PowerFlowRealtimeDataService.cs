@@ -3,6 +3,8 @@ using FroniusSolarClient.Entities.SolarAPI.V1.PowerFlowRealtimeData;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace FroniusSolarClient.Services
 {
@@ -21,9 +23,9 @@ namespace FroniusSolarClient.Services
         /// This request does not care about the configured visibility of single inverters. All inverters are reported.
         /// </summary>
         /// <returns></returns>
-        public Response<PowerFlowRealtimeData> GetPowerFlowRealtimeData()
+        public Task<Response<PowerFlowRealtimeData>> GetPowerFlowRealtimeDataAsync(CancellationToken cancellationToken)
         {
-            return GetDataServiceResponse<PowerFlowRealtimeData>(_cgi);
+            return GetDataServiceResponseAsync<PowerFlowRealtimeData>(_cgi, cancellationToken);
         }
     }
 }

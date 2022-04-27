@@ -3,6 +3,8 @@ using FroniusSolarClient.Entities.SolarAPI.V1.ArchiveData;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace FroniusSolarClient.Services
 {
@@ -52,10 +54,10 @@ namespace FroniusSolarClient.Services
                 $"&{channelParam}";
         }
 
-        public Response<Dictionary<string, ArchiveData>> GetArchiveData(DateTime startDate, DateTime endDate, List<Channel> channels, int deviceId, Scope scope, SeriesType seriesType, bool humanReadable, DeviceClass deviceClass)
+        public Task<Response<Dictionary<string, ArchiveData>>> GetArchiveDataAsync(DateTime startDate, DateTime endDate, List<Channel> channels, int deviceId, Scope scope, SeriesType seriesType, bool humanReadable, DeviceClass deviceClass, CancellationToken cancellationToken)
         {
             string baseEndpointURL = _cgi + BuildQueryString(deviceId, scope, seriesType, humanReadable, startDate, endDate, channels, deviceClass);
-            return GetDataServiceResponse<Dictionary<string, ArchiveData>>(baseEndpointURL);
+            return GetDataServiceResponseAsync<Dictionary<string, ArchiveData>>(baseEndpointURL, cancellationToken);
         }
     }
 }

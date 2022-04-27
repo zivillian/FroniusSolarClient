@@ -3,6 +3,8 @@ using FroniusSolarClient.Entities.SolarAPI.V1.InverterRealtimeData;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace FroniusSolarClient.Services
 {
@@ -30,31 +32,31 @@ namespace FroniusSolarClient.Services
             return $"?Scope={scope}&DeviceId={deviceId}&DataCollection={dataCollection}";
         }
 
-        public Response<CumulationInverterData> GetCumulationInverterData(int deviceId = 1, Scope scope = Scope.Device)
+        public Task<Response<CumulationInverterData>> GetCumulationInverterDataAsync(int deviceId = 1, Scope scope = Scope.Device, CancellationToken cancellationToken = default)
         {
             string baseEndpointURL = _cgi + BuildQueryString(deviceId, scope, DataCollection.CumulationInverterData);           
-            return GetDataServiceResponse<CumulationInverterData>(baseEndpointURL);
+            return GetDataServiceResponseAsync<CumulationInverterData>(baseEndpointURL, cancellationToken);
         }
 
-        public Response<CommonInverterData> GetCommonInverterData(int deviceId = 1, Scope scope = Scope.Device)
+        public  Task<Response<CommonInverterData>> GetCommonInverterDataAsync(int deviceId = 1, Scope scope = Scope.Device, CancellationToken cancellationToken = default)
         {
             string baseEndpointURL = _cgi + BuildQueryString(deviceId, scope, DataCollection.CommonInverterData);
-            return GetDataServiceResponse<CommonInverterData>(baseEndpointURL); 
+            return GetDataServiceResponseAsync<CommonInverterData>(baseEndpointURL, cancellationToken); 
         }
 
 
-        public Response<P3InverterData> GetP3InverterData(int deviceId = 1, Scope scope = Scope.Device)
+        public  Task<Response<P3InverterData>> GetP3InverterDataAsync(int deviceId = 1, Scope scope = Scope.Device, CancellationToken cancellationToken = default)
         {
-            string param = $"?Scope={scope.ToString()}&DeviceId={deviceId}&DataCollection=P3InverterData";
+            string param = $"?Scope={scope.ToString()}&DeviceId={deviceId}&DataCollection=3PInverterData";
             string baseEndpointURL = _cgi + param;
-            return GetDataServiceResponse<P3InverterData>(baseEndpointURL);
+            return GetDataServiceResponseAsync<P3InverterData>(baseEndpointURL, cancellationToken);
         }
 
 
-        public Response<MinMaxInverterData> GetMinMaxInverterData(int deviceId = 1, Scope scope = Scope.Device)
+        public  Task<Response<MinMaxInverterData>> GetMinMaxInverterDataAsync(int deviceId = 1, Scope scope = Scope.Device, CancellationToken cancellationToken = default)
         {
             string baseEndpointURL = _cgi + BuildQueryString(deviceId, scope, DataCollection.MinMaxInverterData);
-            return GetDataServiceResponse<MinMaxInverterData>(baseEndpointURL);
+            return GetDataServiceResponseAsync<MinMaxInverterData>(baseEndpointURL, cancellationToken);
         }
 
     }

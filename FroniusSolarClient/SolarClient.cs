@@ -4,6 +4,8 @@ using FroniusSolarClient.Entities.SolarAPI.V1.InverterRealtimeData;
 using FroniusSolarClient.Services;
 using System;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using FroniusSolarClient.Entities.SolarAPI.V1.PowerFlowRealtimeData;
 
@@ -39,9 +41,9 @@ namespace FroniusSolarClient
         /// <param name="deviceId"></param>
         /// <param name="scope"></param>
         /// <returns></returns>
-        public Response<CumulationInverterData> GetCumulationInverterData(int deviceId = 1, Scope scope = Scope.Device)
+        public Task<Response<CumulationInverterData>> GetCumulationInverterDataAsync(int deviceId = 1, Scope scope = Scope.Device, CancellationToken cancellationToken = default)
         {
-            return _inverterRealtimeDataService.GetCumulationInverterData(deviceId, scope);
+            return _inverterRealtimeDataService.GetCumulationInverterDataAsync(deviceId, scope, cancellationToken);
         }
 
         /// <summary>
@@ -50,9 +52,9 @@ namespace FroniusSolarClient
         /// <param name="deviceId"></param>
         /// <param name="scope"></param>
         /// <returns></returns>
-        public Response<CommonInverterData> GetCommonInverterData(int deviceId = 1, Scope scope = Scope.Device)
+        public Task<Response<CommonInverterData>> GetCommonInverterDataAsync(int deviceId = 1, Scope scope = Scope.Device, CancellationToken cancellationToken = default)
         {
-            return _inverterRealtimeDataService.GetCommonInverterData(deviceId, scope);
+            return _inverterRealtimeDataService.GetCommonInverterDataAsync(deviceId, scope, cancellationToken);
         }
 
         /// <summary>
@@ -61,9 +63,9 @@ namespace FroniusSolarClient
         /// <param name="deviceId"></param>
         /// <param name="scope"></param>
         /// <returns></returns>
-        public Response<P3InverterData> GetP3InverterData(int deviceId = 1, Scope scope = Scope.Device)
+        public Task<Response<P3InverterData>> GetP3InverterDataAsync(int deviceId = 1, Scope scope = Scope.Device, CancellationToken cancellationToken = default)
         {
-            return _inverterRealtimeDataService.GetP3InverterData(deviceId, scope);
+            return _inverterRealtimeDataService.GetP3InverterDataAsync(deviceId, scope, cancellationToken);
         }
 
         /// <summary>
@@ -72,9 +74,9 @@ namespace FroniusSolarClient
         /// <param name="deviceId"></param>
         /// <param name="scope"></param>
         /// <returns></returns>
-        public Response<MinMaxInverterData> GetMinMaxInverterData(int deviceId = 1, Scope scope = Scope.Device)
+        public Task<Response<MinMaxInverterData>> GetMinMaxInverterDataAsync(int deviceId = 1, Scope scope = Scope.Device, CancellationToken cancellationToken = default)
         {
-            return _inverterRealtimeDataService.GetMinMaxInverterData(deviceId, scope);
+            return _inverterRealtimeDataService.GetMinMaxInverterDataAsync(deviceId, scope, cancellationToken);
         }
 
         /// <summary>
@@ -89,14 +91,14 @@ namespace FroniusSolarClient
         /// <param name="humanReadable"></param>
         /// <param name="deviceClass"></param>
         /// <returns></returns>
-        public Response<Dictionary<string, ArchiveData>> GetArchiveData(DateTime startDate, DateTime endDate, List<Channel> channels, int deviceId = 1, Scope scope = Scope.System, SeriesType seriesType = SeriesType.DailySum, bool humanReadable = true, DeviceClass deviceClass = DeviceClass.Inverter)
+        public Task<Response<Dictionary<string, ArchiveData>>> GetArchiveDataAsync(DateTime startDate, DateTime endDate, List<Channel> channels, int deviceId = 1, Scope scope = Scope.System, SeriesType seriesType = SeriesType.DailySum, bool humanReadable = true, DeviceClass deviceClass = DeviceClass.Inverter, CancellationToken cancellationToken = default)
         {
-            return _inverterArchiveDataService.GetArchiveData(startDate, endDate, channels, deviceId, scope, seriesType, humanReadable, deviceClass);
+            return _inverterArchiveDataService.GetArchiveDataAsync(startDate, endDate, channels, deviceId, scope, seriesType, humanReadable, deviceClass, cancellationToken);
         }
 
-        public Response<PowerFlowRealtimeData> GetPowerFlowRealtimeData()
+        public Task<Response<PowerFlowRealtimeData>> GetPowerFlowRealtimeDataAsync(CancellationToken cancellationToken = default)
         {
-            return _powerFlowRealtimeDataService.GetPowerFlowRealtimeData();
+            return _powerFlowRealtimeDataService.GetPowerFlowRealtimeDataAsync(cancellationToken);
         }
     }
 }
